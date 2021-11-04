@@ -34,6 +34,36 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val requiredAnswers = gameResult.gameSettings.minCountOfRightAnswers
+        val scoreAnswers = gameResult.countOfRightAnswers
+        val requiredPercentage = gameResult.gameSettings.minPercentOfRightAnswers
+        val scorePercentage = ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
+
+        with(binding) {
+            tvRequiredAnswers.text = String.format(
+                getString(R.string.required_score),
+                requiredAnswers
+            )
+            tvScoreAnswers.text = String.format(
+                getString(R.string.score_answers),
+                scoreAnswers
+            )
+            tvRequiredPercentage.text = String.format(
+                getString(R.string.required_percentage),
+                requiredPercentage
+            )
+            tvScorePercentage.text = String.format(
+                getString(R.string.score_percentage),
+                scorePercentage
+            )
+
+            if (gameResult.winner) {
+                emojiResult.setImageResource(R.drawable.smile)
+            } else {
+                emojiResult.setImageResource(R.drawable.sad_smile)
+            }
+        }
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 retryGame()
