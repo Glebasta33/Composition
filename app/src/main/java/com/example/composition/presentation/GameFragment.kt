@@ -18,7 +18,7 @@ import com.example.composition.domain.entity.GameResult
 import com.example.composition.domain.entity.Level
 import java.lang.RuntimeException
 
-class GameFragment : Fragment() {
+class  GameFragment : Fragment() {
 
     private var _binding: FragmentGameBinding? = null
     private val binding: FragmentGameBinding
@@ -26,11 +26,11 @@ class GameFragment : Fragment() {
 
     private lateinit var level: Level
 
-    private val viewModel: GameViewModel by lazy {
-        ViewModelProvider(
-            this,
-            AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[GameViewModel::class.java]
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(level, requireActivity().application)
+    }
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
 
     private val tvOptionsArray by lazy {
@@ -66,7 +66,6 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.startGame(level)
         observeViewModel()
         setOptionsListeners()
 
