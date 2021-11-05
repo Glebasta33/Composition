@@ -34,11 +34,15 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindViews()
+        setupClickListeners()
+    }
 
+    private fun bindViews() {
         val requiredAnswers = gameResult.gameSettings.minCountOfRightAnswers
         val scoreAnswers = gameResult.countOfRightAnswers
         val requiredPercentage = gameResult.gameSettings.minPercentOfRightAnswers
-        val scorePercentage = ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
+        val scorePercentage = calculatePercentOfRightAnswers()
 
         with(binding) {
             tvRequiredAnswers.text = String.format(
@@ -57,13 +61,27 @@ class GameFinishedFragment : Fragment() {
                 getString(R.string.score_percentage),
                 scorePercentage
             )
-
-            if (gameResult.winner) {
-                emojiResult.setImageResource(R.drawable.smile)
-            } else {
-                emojiResult.setImageResource(R.drawable.sad_smile)
-            }
+            emojiResult.setImageResource(getSmileResId())
         }
+    }
+
+    private fun getSmileResId(): Int {
+        return if (gameResult.winner) {
+            R.drawable.smile
+        } else {
+            R.drawable.sad_smile
+        }
+    }
+
+    private fun calculatePercentOfRightAnswers(): Int {
+        return if (gameResult.countOfQuestions == 0) {
+            0
+        } else {
+            ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
+        }
+    }
+
+    private fun setupClickListeners() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 retryGame()
