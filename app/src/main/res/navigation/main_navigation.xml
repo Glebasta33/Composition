@@ -45,5 +45,6 @@
             android:name="gameResult"
             app:argType="com.example.composition.domain.entity.GameResult" />
     </fragment>
-
+        tools:layout="@layout/fragment_game_finished" />
+  
 </navigation>
