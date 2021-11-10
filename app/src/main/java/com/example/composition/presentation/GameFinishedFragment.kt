@@ -1,10 +1,12 @@
 package com.example.composition.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.navigation.fragment.findNavController
@@ -18,11 +20,13 @@ class GameFinishedFragment : Fragment() {
     private val binding: FragmentGameFinishedBinding
         get() = _binding ?: throw RuntimeException("FragmentGameFinishedBinding == null")
 
+
+    private val args by navArgs<GameFinishedFragmentArgs>()
     private lateinit var gameResult: GameResult
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseArgs()
+        gameResult = args.gameResult
     }
 
     override fun onCreateView(
@@ -36,7 +40,7 @@ class GameFinishedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindViews()
-        setupClickListeners()
+        setupButtonClickListener()
     }
 
     private fun bindViews() {
@@ -82,8 +86,10 @@ class GameFinishedFragment : Fragment() {
         }
     }
 
-    private fun setupClickListeners() {
-        binding.buttonRetry.setOnClickListener { retryGame() }
+    private fun setupButtonClickListener() {
+        binding.buttonRetry.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {
@@ -91,25 +97,8 @@ class GameFinishedFragment : Fragment() {
         _binding = null
     }
 
-    private fun retryGame() {
-        findNavController().popBackStack()
-    }
-
-    private fun parseArgs() {
-        requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let { gameResult = it }
-    }
-
     companion object {
-
         const val KEY_GAME_RESULT = "GameResult"
-
-        fun newInstance(gameResult: GameResult): GameFinishedFragment {
-            return GameFinishedFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_GAME_RESULT, gameResult)
-                }
-            }
-        }
     }
 
 }
