@@ -44,24 +44,25 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun bindViews() {
-        val requiredAnswers = gameResult.gameSettings.minCountOfRightAnswers
-        val scoreAnswers = gameResult.countOfRightAnswers
-        val requiredPercentage = gameResult.gameSettings.minPercentOfRightAnswers
+//        val requiredAnswers = gameResult.gameSettings.minCountOfRightAnswers
+//        val scoreAnswers = gameResult.countOfRightAnswers
+//        val requiredPercentage = gameResult.gameSettings.minPercentOfRightAnswers
         val scorePercentage = calculatePercentOfRightAnswers()
 
+        binding.gameResult = args.gameResult
         with(binding) {
-            tvRequiredAnswers.text = String.format(
-                getString(R.string.required_score),
-                requiredAnswers
-            )
-            tvScoreAnswers.text = String.format(
-                getString(R.string.score_answers),
-                scoreAnswers
-            )
-            tvRequiredPercentage.text = String.format(
-                getString(R.string.required_percentage),
-                requiredPercentage
-            )
+//            tvRequiredAnswers.text = String.format(
+//                getString(R.string.required_score),
+//                requiredAnswers
+//            )
+//            tvScoreAnswers.text = String.format(
+//                getString(R.string.score_answers),
+//                scoreAnswers
+//            )
+//            tvRequiredPercentage.text = String.format(
+//                getString(R.string.required_percentage),
+//                requiredPercentage
+//            )
             tvScorePercentage.text = String.format(
                 getString(R.string.score_percentage),
                 scorePercentage
