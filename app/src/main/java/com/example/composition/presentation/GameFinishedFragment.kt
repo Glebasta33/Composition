@@ -39,55 +39,7 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindViews()
-        setupButtonClickListener()
-    }
-
-    private fun bindViews() {
-//        val requiredAnswers = gameResult.gameSettings.minCountOfRightAnswers
-//        val scoreAnswers = gameResult.countOfRightAnswers
-//        val requiredPercentage = gameResult.gameSettings.minPercentOfRightAnswers
-        val scorePercentage = calculatePercentOfRightAnswers()
-
         binding.gameResult = args.gameResult
-        with(binding) {
-//            tvRequiredAnswers.text = String.format(
-//                getString(R.string.required_score),
-//                requiredAnswers
-//            )
-//            tvScoreAnswers.text = String.format(
-//                getString(R.string.score_answers),
-//                scoreAnswers
-//            )
-//            tvRequiredPercentage.text = String.format(
-//                getString(R.string.required_percentage),
-//                requiredPercentage
-//            )
-            tvScorePercentage.text = String.format(
-                getString(R.string.score_percentage),
-                scorePercentage
-            )
-            emojiResult.setImageResource(getSmileResId())
-        }
-    }
-
-    private fun getSmileResId(): Int {
-        return if (gameResult.winner) {
-            R.drawable.smile
-        } else {
-            R.drawable.sad_smile
-        }
-    }
-
-    private fun calculatePercentOfRightAnswers(): Int {
-        return if (gameResult.countOfQuestions == 0) {
-            0
-        } else {
-            ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
-        }
-    }
-
-    private fun setupButtonClickListener() {
         binding.buttonRetry.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -97,9 +49,4 @@ class GameFinishedFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    companion object {
-        const val KEY_GAME_RESULT = "GameResult"
-    }
-
 }

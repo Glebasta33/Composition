@@ -19,7 +19,6 @@ import com.example.composition.databinding.FragmentGameBinding
 import com.example.composition.domain.entity.GameResult
 import com.example.composition.domain.entity.GameSettings
 import com.example.composition.domain.entity.Level
-import com.example.composition.presentation.GameFinishedFragment.Companion.KEY_GAME_RESULT
 import java.lang.RuntimeException
 
 class  GameFragment : Fragment() {
