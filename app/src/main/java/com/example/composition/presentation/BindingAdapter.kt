@@ -1,10 +1,18 @@
 package com.example.composition.presentation
 
+import android.content.res.ColorStateList
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.example.composition.R
 import com.example.composition.domain.entity.GameResult
+
+interface OnOptionClickListener {
+    fun onOptionClick(option: Int)
+}
 
 @BindingAdapter("requiredAnswers")
 fun bindRequiredAnswers(textView: TextView, count: Int) {
@@ -53,8 +61,46 @@ fun bingSmileResult(imageView: ImageView, gameResult: GameResult) {
 
 private fun getSmileResId(gameResult: GameResult): Int {
     return if (gameResult.winner) {
-            R.drawable.smile
-        } else {
-            R.drawable.sad_smile
-        }
+        R.drawable.smile
+    } else {
+        R.drawable.sad_smile
+    }
+}
+
+@BindingAdapter("percentOfProgress")
+fun setProgressParameters(progressBar: ProgressBar, percentOfProgress: Int) {
+    progressBar.setProgress(percentOfProgress, true)
+}
+
+@BindingAdapter("progressTint")
+fun setProgressTint(progressBar: ProgressBar, isEnough: Boolean) {
+    val color = getColorByState(progressBar, isEnough)
+    progressBar.progressTintList = ColorStateList.valueOf(color)
+}
+
+@BindingAdapter("textProgressTint")
+fun setTextProgressTint(tvAnswersProgress: TextView, isEnough: Boolean) {
+    val color = getColorByState(tvAnswersProgress, isEnough)
+    tvAnswersProgress.setTextColor(color)
+}
+
+private fun getColorByState(view: View, isEnough: Boolean): Int {
+    val colorResId = if (isEnough) {
+        android.R.color.holo_green_light
+    } else {
+        android.R.color.holo_red_light
+    }
+    return ContextCompat.getColor(view.context, colorResId)
+}
+
+@BindingAdapter("numberAsText")
+fun bindNumberAsText(textView: TextView, number: Int) {
+    textView.text = number.toString()
+}
+
+@BindingAdapter("onOptionClick")
+fun bindOnOptionClickListener(textView: TextView, optionClickListener: OnOptionClickListener) {
+    textView.setOnClickListener {
+        optionClickListener.onOptionClick(textView.text.toString().toInt())
+    }
 }
